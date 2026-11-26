@@ -1,0 +1,199 @@
+{
+  "generated_at": "2026-11-26 01:36:52",
+  "analytic_references": {
+    "rows": [
+      {
+        "scene": "constant",
+        "worst_relative_error_vs_quad": 0.00010076470944593876,
+        "pass": true
+      },
+      {
+        "scene": "layers",
+        "worst_relative_error_vs_quad": 3.749497807809543e-05,
+        "pass": true
+      },
+      {
+        "scene": "sparse",
+        "worst_relative_error_vs_quad": 4.955635901637834e-11,
+        "pass": true
+      },
+      {
+        "scene": "complex",
+        "worst_relative_error_vs_quad": 3.863241578681011e-07,
+        "pass": true
+      }
+    ],
+    "pass": true
+  },
+  "constant": {
+    "n_per_kappa": 8000,
+    "rows": [
+      {
+        "kappa": 0.05,
+        "exact_transmittance": 0.9048374180359595,
+        "binary_mean": 0.910125,
+        "binary_mean_z": 1.611698203036053,
+        "ratio_mean": 0.90325,
+        "ratio_mean_z": -0.34213926785849774,
+        "variance_z": -1.521532328000382,
+        "candidate_mean": 0.10875,
+        "candidate_theory": 0.1,
+        "candidate_count_z": 1.7499999999999987,
+        "pass": "True"
+      },
+      {
+        "kappa": 0.3,
+        "exact_transmittance": 0.5488116360940264,
+        "binary_mean": 0.54425,
+        "binary_mean_z": -0.8199267001726601,
+        "ratio_mean": 0.544,
+        "ratio_mean_z": -0.6115502793932494,
+        "variance_z": 0.16146292665451592,
+        "candidate_mean": 0.59175,
+        "candidate_theory": 0.6,
+        "candidate_count_z": -0.6736096792653723,
+        "pass": "True"
+      },
+      {
+        "kappa": 1.0,
+        "exact_transmittance": 0.1353352832366127,
+        "binary_mean": 0.141875,
+        "binary_mean_z": 1.7099150936814937,
+        "ratio_mean": 0.1405,
+        "ratio_mean_z": 0.9548763086692631,
+        "variance_z": 1.5391468009649165,
+        "candidate_mean": 2.02875,
+        "candidate_theory": 2.0,
+        "candidate_count_z": 1.2857390870623813,
+        "pass": "True"
+      },
+      {
+        "kappa": 2.5,
+        "exact_transmittance": 0.006737946999085467,
+        "binary_mean": 0.0065,
+        "binary_mean_z": -0.26015340129898673,
+        "ratio_mean": 0.0065,
+        "ratio_mean_z": -0.1839562342072587,
+        "variance_z": -0.2584343725279066,
+        "candidate_mean": 4.98875,
+        "candidate_theory": 5.0,
+        "candidate_count_z": -0.31819805153395847,
+        "pass": "True"
+      },
+      {
+        "kappa": 5.0,
+        "exact_transmittance": 4.5399929762484854e-05,
+        "binary_mean": 0.000125,
+        "binary_mean_z": 1.0566732485123163,
+        "ratio_mean": 0.0,
+        "ratio_mean_z": -0.42615485922226803,
+        "variance_z": 1.0567725751529102,
+        "candidate_mean": 9.99575,
+        "candidate_theory": 10.0,
+        "candidate_count_z": -0.08500000000001506,
+        "pass": "True"
+      }
+    ],
+    "pass": true
+  },
+  "layered_sparse": {
+    "checks": [
+      {
+        "scene": "layers",
+        "ray": 0,
+        "quad_transmittance": 0.0063080438504542315,
+        "mc_mean": 0.008,
+        "z": 1.6553563131507034,
+        "pass": true
+      },
+      {
+        "scene": "layers",
+        "ray": 1,
+        "quad_transmittance": 0.03627321662638882,
+        "mc_mean": 0.035666666666666666,
+        "z": -0.25128826294058587,
+        "pass": true
+      },
+      {
+        "scene": "layers",
+        "ray": 2,
+        "quad_transmittance": 0.25800401954369917,
+        "mc_mean": 0.254,
+        "z": -0.7088556437486137,
+        "pass": true
+      },
+      {
+        "scene": "sparse_hit",
+        "quad_transmittance": 0.5568397360314082,
+        "mc_mean": 0.5451666666666667,
+        "z": -1.8201835109418065,
+        "pass": true
+      },
+      {
+        "scene": "sparse_empty_gap",
+        "quad_transmittance": 1.0,
+        "mc_mean": 1.0,
+        "z": 0.0,
+        "pass": true
+      }
+    ],
+    "pass": true
+  },
+  "majorant_policies": {
+    "strict_raises": true,
+    "violation_context": {
+      "type": "majorant_violation",
+      "message": "主界过低(audit): sigma_t=1 > M=0.5 (p=2>1)，位置 t=3, 段 1(global_majorant)。禁止夹紧隐瞒偏差。",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ray_t": 3.0,
+      "segment_index": 1,
+      "declared_majorant": 0.5,
+      "actual_sigma_t": 1.0,
+      "raw_accept_probability": 2.0,
+      "density": 1.0,
+      "density_majorant_declared": 0.5,
+      "safe_density_majorant": 1.0,
+      "partition": "global",
+      "allowed_actions": [
+        "repartition",
+        "discard_resample",
+        "clamp_demo"
+      ],
+      "detected_by": "audit"
+    },
+    "honest_transmittance": 0.1353352832366127,
+    "clamp_demo_mean": 0.3546666666666667,
+    "clamp_demo_predicted_biased": 0.36787944117144233,
+    "clamp_is_biased": true,
+    "discard_mean": 0.13966666666666666,
+    "discard_z": 0.9807828633186666,
+    "pass": true
+  },
+  "all_statistical_checks_pass": true,
+  "elapsed_seconds": 29.456520080566406,
+  "figures": [
+    "/workspace/outputs/transmittance_validation.png"
+  ],
+  "artifacts": {
+    "complex_png": "/workspace/outputs/complex_scene.png",
+    "weights_png": "/workspace/outputs/complex_transmittance_weights.png",
+    "candidates_png": "/workspace/outputs/complex_candidate_counts.png",
+    "contact_sheet_png": "/workspace/outputs/scene_contact_sheet.png",
+    "render_seconds": 25.144749879837036,
+    "render_stats": {
+      "iterations": 36,
+      "mean_candidates": 3.1051648457845054,
+      "max_candidates": 19,
+      "real_events": 10197406,
+      "null_events": 4454600,
+      "pmax": 0.9999999549207189,
+      "tolerance_clamps": 0,
+      "repairs": [],
+      "n_rays": 4718592
+    }
+  }
+}

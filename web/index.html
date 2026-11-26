@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>非均匀参与介质 · 随机跟踪光照实验窗口</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="title">
+    <h1>非均匀参与介质 · 随机跟踪积分器</h1>
+    <span class="subtitle">Woodcock / delta tracking · 真实散射与空事件 · 解析光学深度分段 · 无偏主界修复</span>
+  </div>
+  <div class="kernel-status">
+    <span id="kernelDot" class="dot dot-idle"></span>
+    <span id="kernelStatus">内核连接中…</span>
+    <button id="diagBtn" class="btn btn-ghost" type="button">内核诊断</button>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- Controls are generated entirely from /api/schema -->
+  <aside class="panel controls">
+    <h2>内核驱动控件</h2>
+    <form id="controlForm"></form>
+    <div class="btn-row">
+      <button id="renderBtn" class="btn btn-primary" type="button">重新追踪渲染</button>
+      <button id="resetBtn" class="btn" type="button">重置内核会话</button>
+    </div>
+    <label class="acc-row">
+      <input type="checkbox" id="accToggle" checked>
+      <span>渐进累积采样（真正增加样本，不掩盖期望值错误）</span>
+    </label>
+    <div id="controlNote" class="control-note"></div>
+  </aside>
+
+  <section class="panel result">
+    <nav class="tabs">
+      <button class="tab active" data-tab="image" type="button">体积图像</button>
+      <button class="tab" data-tab="weights" type="button">采样权重 / 事件计数</button>
+      <button class="tab" data-tab="trace" type="button">选中光线追踪记录</button>
+      <button class="tab" data-tab="validation" type="button">内核统计验证</button>
+      <button class="tab" data-tab="diagnostics" type="button">诊断 / 反馈日志</button>
+    </nav>
+
+    <!-- failure feedback banner -->
+    <div id="errorPanel" class="error-panel hidden">
+      <div class="error-head">
+        <strong id="errorType">内核失败</strong>
+        <button id="errorClose" class="btn-mini" type="button">×</button>
+      </div>
+      <p id="errorMessage"></p>
+      <pre id="errorContext" class="error-context"></pre>
+      <div class="feedback-actions">
+        <span class="feedback-label">把失败反馈回随机介质内核：</span>
+        <span id="feedbackButtons"></span>
+      </div>
+    </div>
+
+    <div class="tab-body">
+      <div class="tab-pane active" id="tab-image">
+        <div class="image-wrap" id="imageWrap">
+          <img id="renderImage" alt="随机跟踪渲染结果">
+          <div id="pickMarker" class="pick-marker hidden"></div>
+          <div id="renderBusy" class="busy hidden"><span>内核追踪中…</span></div>
+        </div>
+        <p class="hint">点击图像任意位置，检查该像素相机光线的候选事件、概率与权重。</p>
+        <div class="thumb-row">
+          <figure class="thumb" data-goto="weights">
+            <img id="thumbWeights" alt="透射权重缩略图">
+            <figcaption>采样权重 P=∏(1−p)（点击放大）</figcaption>
+          </figure>
+          <figure class="thumb" data-goto="weights">
+            <img id="thumbCand" alt="候选计数缩略图">
+            <figcaption>候选事件计数（点击查看热图）</figcaption>
+          </figure>
+        </div>
+        <div id="statsStrip" class="stats-strip"></div>
+      </div>
+
+      <div class="tab-pane" id="tab-weights">
+        <div class="weight-grid">
+          <figure>
+            <figcaption>透射权重图 P = ∏(1−p)（采样权重）</figcaption>
+            <img id="weightsImage" alt="透射权重热图">
+          </figure>
+          <figure>
+            <figcaption>每光线候选事件数（局部主界越紧越少）</figcaption>
+            <img id="candidatesImage" alt="候选事件计数热图">
+          </figure>
+        </div>
+        <p class="hint" id="weightHint"></p>
+      </div>
+
+      <div class="tab-pane" id="tab-trace">
+        <div id="traceEmpty" class="placeholder">还没有选中光线。回到「体积图像」点击一个像素。</div>
+        <div id="traceContent" class="hidden">
+          <div id="traceSummary" class="trace-summary"></div>
+          <canvas id="weightPlot" width="900" height="220"></canvas>
+          <div class="table-scroll">
+            <table id="eventTable">
+              <thead><tr>
+                <th>#</th><th>t</th><th>类型</th><th>分段</th><th>d(x)</th>
+                <th>σ_t</th><th>M</th><th>p_raw</th><th>p应用</th>
+                <th>权重前</th><th>因子</th><th>权重后</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div id="multiBounces"></div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="tab-validation">
+        <div id="validationSummary" class="placeholder">切换到此页时从 outputs/validation_report.json 读取。</div>
+        <img id="validationFigure" class="validation-figure hidden" alt="统计验证图">
+      </div>
+
+      <div class="tab-pane" id="tab-diagnostics">
+        <pre id="diagnosticsView" class="diagnostics">点击右上角「内核诊断」刷新。</pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  单位约定：世界单位 wu（米）· 无量纲密度 d(x) · σ_t = κ·d [wu⁻¹] · 主界 M = κ·d̄ [wu⁻¹] · p = σ_t/M ∈ [0,1]
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
